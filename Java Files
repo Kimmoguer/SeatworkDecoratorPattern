@@ -1,1 +1,183 @@
+// Coffee.java
+public interface Coffee {
+    String getDescription();
+    double getCost();
+}
 
+// BlackCoffee.java
+public class BlackCoffee implements Coffee {
+    @Override
+    public String getDescription() {
+        return "Black Coffee";
+    }
+
+    @Override
+    public double getCost() {
+        return 100.00;
+    }
+}
+
+// Espresso.java
+public class Espresso implements Coffee {
+    @Override
+    public String getDescription() {
+        return "Espresso";
+    }
+
+    @Override
+    public double getCost() {
+        return 130.00;
+    }
+}
+
+// Latte.java
+public class Latte implements Coffee {
+    @Override
+    public String getDescription() {
+        return "Latte";
+    }
+
+    @Override
+    public double getCost() {
+        return 150.00;
+    }
+}
+
+// CoffeeDecorator.java
+public abstract class CoffeeDecorator implements Coffee {
+    protected Coffee coffee;
+
+    public CoffeeDecorator(Coffee coffee) {
+        this.coffee = coffee;
+    }
+
+    @Override
+    public String getDescription() {
+        return coffee.getDescription();
+    }
+
+    @Override
+    public double getCost() {
+        return coffee.getCost();
+    }
+}
+
+// Milk.java
+public class Milk extends CoffeeDecorator {
+    public Milk(Coffee coffee) {
+        super(coffee);
+    }
+
+    @Override
+    public String getDescription() {
+        return coffee.getDescription() + ", Milk";
+    }
+
+    @Override
+    public double getCost() {
+        return coffee.getCost() + 25.00;
+    }
+}
+
+// Sugar.java
+public class Sugar extends CoffeeDecorator {
+    public Sugar(Coffee coffee) {
+        super(coffee);
+    }
+
+    @Override
+    public String getDescription() {
+        return coffee.getDescription() + ", Sugar";
+    }
+
+    @Override
+    public double getCost() {
+        return coffee.getCost() + 10.00;
+    }
+}
+
+// CaramelSyrup.java
+public class CaramelSyrup extends CoffeeDecorator {
+    public CaramelSyrup(Coffee coffee) {
+        super(coffee);
+    }
+
+    @Override
+    public String getDescription() {
+        return coffee.getDescription() + ", Caramel Syrup";
+    }
+
+    @Override
+    public double getCost() {
+        return coffee.getCost() + 40.00;
+    }
+}
+
+// WhippedCream.java
+public class WhippedCream extends CoffeeDecorator {
+    public WhippedCream(Coffee coffee) {
+        super(coffee);
+    }
+
+    @Override
+    public String getDescription() {
+        return coffee.getDescription() + ", Whipped Cream";
+    }
+
+    @Override
+    public double getCost() {
+        return coffee.getCost() + 35.00;
+    }
+}
+
+// VanillaSyrup.java
+public class VanillaSyrup extends CoffeeDecorator {
+    public VanillaSyrup(Coffee coffee) {
+        super(coffee);
+    }
+
+    @Override
+    public String getDescription() {
+        return coffee.getDescription() + ", Vanilla Syrup";
+    }
+
+    @Override
+    public double getCost() {
+        return coffee.getCost() + 45.00;
+    }
+}
+
+// Main.java
+public class Main {
+    public static void main(String[] args) {
+        System.out.println("Welcome to Brewtiful Coffee Shop!\n");
+
+        // Order 1
+        Coffee order1 = new BlackCoffee();
+        printOrder("Plain Black Coffee", order1);
+
+        // Order 2
+        Coffee order2 = new CaramelSyrup(new Milk(new Espresso()));
+        printOrder("Caramel Macchiato Style", order2);
+
+        // Order 3
+        Coffee order3 = new Sugar(new VanillaSyrup(new WhippedCream(new Latte())));
+        printOrder("Sweet Dream Latte", order3);
+
+        // Order 4 - The Ultimate Overload
+        Coffee order4 = new WhippedCream(
+                new CaramelSyrup(
+                        new VanillaSyrup(
+                                new Sugar(
+                                        new Milk(new BlackCoffee())))));
+        printOrder("Ultimate Brewtiful Overload", order4);
+    }
+
+    private static void printOrder(String name, Coffee coffee) {
+        System.out.println("= ".repeat(30));
+        System.out.println(name.toUpperCase());
+        System.out.println("Ingredients: " + coffee.getDescription());
+        System.out.printf("Price      : ₱%.2f%n", coffee.getCost());
+        System.out.println("= ".repeat(30) + "\n");
+    }
+}
